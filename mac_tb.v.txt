@@ -1,0 +1,35 @@
+module mac_tb;
+
+reg clk;
+reg reset;
+reg [3:0] A, B;
+wire [7:0] result;
+mac_unit_4bit uut (
+    .clk(clk),
+    .reset(reset),
+    .A(A),
+    .B(B),
+    .result(result)
+);
+always #5 clk = ~clk;
+
+initial
+begin
+    $monitor("Time=%0t | A=%d B=%d | Result=%d",
+              $time, A, B, result);
+
+    clk = 0;
+    reset = 1;
+    A = 0;
+    B = 0;
+
+    #10 reset = 0;
+
+    #10 A = 2; B = 3;
+    #10 A = 4; B = 5;
+    #10 A = 1; B = 10;
+
+    #20 $finish;
+end
+
+endmodule
